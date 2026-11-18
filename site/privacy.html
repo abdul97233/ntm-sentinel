@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy · NTM Sentinel</title>
+  <meta name="description" content="NTM Sentinel privacy policy: what the extension reads, what stays on your device, and the optional cloud features." />
+  <link rel="icon" type="image/png" href="assets/favicon-32.png" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <meta name="theme-color" content="#080d18" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="assets/icon-128.png" alt="" />NTM Sentinel</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="./">Home</a>
+        <a href="https://github.com/abdul97233/ntm-sentinel">GitHub</a>
+        <a class="btn btn-primary btn-sm" href="https://github.com/abdul97233/ntm-sentinel/releases/latest">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <article class="prose">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: 18 November 2026 · Applies to NTM Sentinel v0.1.0 and later</p>
+
+      <p>NTM Sentinel is a browser extension for Google Chrome and Microsoft Edge. It analyses websites for security indicators, privacy and tracking behaviour, and the technologies they use, and it provides developer inspection tools. <b>It is designed to run locally: analysis happens inside your browser.</b></p>
+
+      <div class="summary">
+        <h2 style="margin-top:0">Summary</h2>
+        <ul>
+          <li>We do <b>not</b> collect, sell or share personal data.</li>
+          <li>We do <b>not</b> track you, show ads, or include analytics or telemetry.</li>
+          <li>No account is needed.</li>
+          <li>Browsing history, cookies, page content and network data stay <b>on your device</b>.</li>
+          <li>The only feature that can send data off your device is the <b>optional</b> cloud reputation check. It is off by default, and it sends only a hostname, and only when you click "Check".</li>
+        </ul>
+      </div>
+
+      <h2>What the extension reads, and when</h2>
+      <p>NTM Sentinel reads a web page only after you allow it: when you click the toolbar icon on that page (the browser's <code>activeTab</code> mechanism), or when you grant access to that site, or to all sites, from the extension. When it analyses a page, it reads the following <b>on your device</b>:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Data</th><th>Purpose</th><th>Leaves your device?</th></tr></thead>
+          <tbody>
+            <tr><td>Page URL and hostname</td><td>Security indicators (ScamLens)</td><td>No (see cloud reputation below)</td></tr>
+            <tr><td>Page structure: script/stylesheet URLs, meta tags, CSS class names, forms (presence of password fields, form destinations), not form values</td><td>Technology detection, security checks</td><td>No</td></tr>
+            <tr><td>URLs of resources the page loaded (via the browser's Performance API)</td><td>Third-party and tracker detection</td><td>No</td></tr>
+            <tr><td>Response headers of the current page (one HEAD request to the same site you are viewing; can be turned off)</td><td>Security headers, server/CDN detection</td><td>No</td></tr>
+            <tr><td>Cookie <b>names and attributes</b> (domain, expiry, Secure, HttpOnly, SameSite). <b>Cookie values are never read into the interface or stored.</b></td><td>Privacy analysis</td><td>No</td></tr>
+            <tr><td>localStorage / sessionStorage <b>key names, counts and approximate sizes</b>, and IndexedDB database names. <b>Stored values are never extracted.</b></td><td>Privacy analysis</td><td>No</td></tr>
+            <tr><td>Counts of calls to canvas/WebGL/audio APIs (only if you enable the fingerprinting monitor)</td><td>Fingerprinting indicators</td><td>No</td></tr>
+            <tr><td>Computed styles, colors, fonts and image URLs of elements you inspect</td><td>DevLens developer tools</td><td>No</td></tr>
+            <tr><td>Network requests shown in DevTools (only while you have the NTM APIWatch panel open)</td><td>API debugging</td><td>No. Kept in memory and discarded when DevTools closes.</td></tr>
+            <tr><td>Top-level navigation URLs per tab (only if you grant the optional navigation permission)</td><td>Redirect-chain display</td><td>No. Kept in session memory and cleared when the tab or browser closes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>What is stored locally</h2>
+      <p>Data is kept in your browser's extension storage on your device:</p>
+      <ul>
+        <li><b>Settings:</b> stored until you change or delete them.</li>
+        <li><b>Scan results for open tabs:</b> kept in session storage, cleared when the tab or browser closes.</li>
+        <li><b>Scan history:</b> <b>off by default</b>. If you turn it on, it stores hostname, risk level, tracker count and technology count, up to a limit you choose.</li>
+        <li><b>Cached signature lists:</b> technology and tracker definitions.</li>
+      </ul>
+      <p>You can delete all of it at any time from <b>Settings → Data &amp; history → Delete all local data</b>. Uninstalling the extension also removes it.</p>
+
+      <h2>Optional cloud features (off by default)</h2>
+      <p>If the extension is built with an NTM backend and you turn these features on in Settings:</p>
+      <ul>
+        <li><b>Cloud reputation:</b> when you click "Check" on the Security page, the <b>hostname only</b> (for example <code>example.com</code>) is sent to the NTM backend. The URL path, query string, cookies and page content are never sent. The backend may forward the hostname to the threat-intelligence providers it is configured with, such as Google Safe Browsing or VirusTotal, under their own terms. Results may be cached on the backend, keyed by hostname, for up to 6 hours. The backend does not store who requested a lookup. For abuse protection, rate limiting uses a one-way hash of the requesting IP address, and raw IP addresses are not logged.</li>
+        <li><b>Signature updates:</b> the extension downloads updated technology and tracker lists. <b>No browsing data is sent.</b></li>
+      </ul>
+      <p>The v0.1.0 release has <b>no backend configured</b>, so none of the data above is sent anywhere.</p>
+
+      <h2>Exports</h2>
+      <p>APIWatch and DevLens can export data (requests, design tokens, asset lists) to a file on your computer, but only when you choose to. Sensitive headers and tokens are redacted by default, and you are warned before exporting.</p>
+
+      <h2>Permissions</h2>
+      <p>See the <a href="https://github.com/abdul97233/ntm-sentinel/blob/main/docs/PERMISSIONS.md">permissions document</a> for every permission, why it is needed, and whether it is optional.</p>
+
+      <h2>Children</h2>
+      <p>NTM Sentinel is a general-purpose developer and security tool. It is not directed at children and collects no personal information from anyone.</p>
+
+      <h2>Changes</h2>
+      <p>If this policy changes, the updated version will be published here and in the extension's release notes, with a new "Last updated" date. Any change that sends new data off your device will be opt-in.</p>
+
+      <h2>Contact</h2>
+      <p>Questions or concerns: <a href="https://github.com/abdul97233/ntm-sentinel/issues">open an issue</a> in the project repository.</p>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 NTM Sentinel · MIT License</span>
+      <nav aria-label="Footer">
+        <a href="./">Home</a>
+        <a href="https://github.com/abdul97233/ntm-sentinel">Source code</a>
+        <a href="https://github.com/abdul97233/ntm-sentinel/issues">Support</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
