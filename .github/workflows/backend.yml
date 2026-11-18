@@ -43,7 +43,12 @@ jobs:
 
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Deploys only when Cloudflare is configured: run manually (Actions → Backend → Run workflow),
+    # or set the repository variable DEPLOY_ENABLED=true to auto-deploy on pushes to main.
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'))
     runs-on: ubuntu-latest
     # Configure required reviewers on this environment for manual approval.
     environment: production

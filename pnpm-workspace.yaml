@@ -1,11 +1,11 @@
 packages:
   - apps/*
   - packages/*
+
+# pnpm 11 requires an explicit decision for every dependency build script.
 allowBuilds:
-  '@parcel/watcher': set this to true or false
+  # Native file watcher used only by Sass in watch mode; not needed for builds/CI.
+  '@parcel/watcher': false
+  # Required: esbuild (Vite/Wrangler bundling) and workerd (Wrangler local runtime).
   esbuild: true
   workerd: true
-onlyBuiltDependencies:
-  - esbuild
-  - workerd
-  - sharp
