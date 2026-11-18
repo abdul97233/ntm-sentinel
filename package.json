@@ -1,0 +1,32 @@
+{
+  "name": "ntm-sentinel",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NTM Sentinel — One browser. Complete intelligence.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.1.2",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "build": "pnpm --filter @ntm/extension build",
+    "build:extension": "pnpm --filter @ntm/extension build",
+    "package": "pnpm --filter @ntm/extension package",
+    "dev:backend": "pnpm --filter @ntm/backend dev",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
+    "typescript": "^7.0.2",
+    "typescript-eslint": "^8.73.0",
+    "vitest": "^5.1.0"
+  }
+}

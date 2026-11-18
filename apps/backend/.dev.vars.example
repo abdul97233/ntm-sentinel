@@ -1,0 +1,6 @@
+# Copy to .dev.vars for `wrangler dev`. Never commit .dev.vars.
+# Optional provider keys — leave empty to use only the mock provider locally.
+GSB_API_KEY=
+VT_API_KEY=
+# At least 32 characters; enables PUT /api/v1/admin/signatures/:kind
+ADMIN_TOKEN=

@@ -1,0 +1,68 @@
+// NTM Sentinel optional backend — Cloudflare Workers configuration.
+// Requires Wrangler >= 4.36 (top-level "ratelimits" binding).
+// Replace every REPLACE_WITH_* placeholder before deploying (see docs/DEPLOYMENT.md).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ntm-sentinel-api-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true },
+
+  // ---------- Development (default) environment ----------
+  "vars": {
+    "ENVIRONMENT": "development",
+    // Comma-separated exact origins. In development any unpacked extension id and localhost are also accepted.
+    "ALLOWED_ORIGINS": "",
+    // Comma-separated: mock | gsb | virustotal. "mock" is ignored when ENVIRONMENT=production.
+    "REPUTATION_PROVIDERS": "mock",
+    "BUILD_ID": "dev"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ntm-sentinel-dev",
+      "database_id": "REPLACE_WITH_DEV_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [{ "binding": "CACHE", "id": "REPLACE_WITH_DEV_KV_NAMESPACE_ID" }],
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      // Any integer unique to your account; workers sharing it share counters.
+      "namespace_id": "1001",
+      "simple": { "limit": 60, "period": 60 }
+    }
+  ],
+
+  // ---------- Production environment ----------
+  // Bindings are not inherited between environments, so they are repeated here.
+  "env": {
+    "production": {
+      "name": "ntm-sentinel-api",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "ALLOWED_ORIGINS": "chrome-extension://REPLACE_WITH_CHROME_EXTENSION_ID,extension://REPLACE_WITH_EDGE_EXTENSION_ID",
+        "REPUTATION_PROVIDERS": "gsb",
+        "BUILD_ID": "production"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "ntm-sentinel-prod",
+          "database_id": "REPLACE_WITH_PROD_D1_DATABASE_ID",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "kv_namespaces": [{ "binding": "CACHE", "id": "REPLACE_WITH_PROD_KV_NAMESPACE_ID" }],
+      "ratelimits": [
+        {
+          "name": "RATE_LIMITER",
+          "namespace_id": "1002",
+          "simple": { "limit": 60, "period": 60 }
+        }
+      ]
+    }
+  }
+  // Secrets (never committed): wrangler secret put GSB_API_KEY | VT_API_KEY | ADMIN_TOKEN [--env production]
+}

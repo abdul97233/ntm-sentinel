@@ -1,0 +1,37 @@
+{
+  "name": "@ntm/extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:e2e": "node scripts/build.mjs --e2e",
+    "package": "node scripts/build.mjs && node scripts/package.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "node scripts/build.mjs --e2e && playwright test",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ntm/shared": "workspace:*",
+    "@ntm/signatures": "workspace:*",
+    "lucide-react": "^0.460.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/chrome": "^0.3.7",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "fflate": "^0.8.3",
+    "jsdom": "^31.0.1",
+    "sass": "^1.108.2",
+    "vite": "^8.3.8"
+  }
+}

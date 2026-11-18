@@ -1,0 +1,72 @@
+name: Backend
+
+on:
+  pull_request:
+    paths:
+      - 'apps/backend/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/backend.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/backend/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/backend.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm --filter @ntm/backend typecheck
+      - name: Test
+        run: pnpm --filter @ntm/backend test
+      - name: Bundle (dry run)
+        run: pnpm --filter @ntm/backend deploy:dry
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Configure required reviewers on this environment for manual approval.
+    environment: production
+    concurrency:
+      group: backend-deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Apply D1 migrations
+        working-directory: apps/backend
+        run: pnpm exec wrangler d1 migrations apply DB --remote --env production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy Worker
+        working-directory: apps/backend
+        run: pnpm exec wrangler deploy --env production --var BUILD_ID:${{ github.sha }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
